@@ -7,4 +7,4 @@ jobs:
 
     steps:
       - name: Printing Event Details
-        run: echo '${{github.event}}'
+        run: echo '${{ toJSON(github.event) }}'
