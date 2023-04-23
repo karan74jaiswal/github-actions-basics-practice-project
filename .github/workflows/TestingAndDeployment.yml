@@ -1,0 +1,68 @@
+name: Testing, Linting and Deployment in a sequential way
+on: [push, workflow_dispatch]
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Getting the Code
+        uses: actions/checkout@v3.5.2
+
+      - name: Installing NodeJS
+        uses: actions/setup-node@v3
+        with: 
+          node-version: 16
+
+      - name: Installing Dependencies
+        run: npm ci
+
+      - name: Running Tests
+        run: npm run test
+
+      - name: Printing Message
+        run: echo "Testing Completed Successfully"
+
+  linting:
+    needs: testing
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Getting the Code
+        uses: actions/checkout@v3.5.2
+
+      - name: Installing NodeJS
+        uses: actions/setup-node@v3
+        with: 
+          node-version: 16
+
+      - name: Installing Dependencies
+        run: npm ci
+
+      - name: Linting the code
+        run: npm run lint
+
+      - name: Printing Message
+        run: echo "Linting Completed Successfully"
+  
+  deploying:
+    needs: linting
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Getting the Code
+        uses: actions/checkout@v3.5.2
+
+      - name: Installing NodeJS
+        uses: actions/setup-node@v3
+        with: 
+          node-version: 16
+
+      - name: Installing Dependencies
+        run: npm ci
+
+      - name: Building the code
+        run: npm run build
+
+      - name: Printing Message
+        run: echo "Deployment Completed Successfully"
